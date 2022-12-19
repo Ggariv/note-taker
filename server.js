@@ -20,7 +20,7 @@ app.get("/notes", (req, res) => {
    res.sendFile(path.join(__dirname, "./public/notes.html"))
     });
 
-// send json of all notes if user accesses /api/notes
+// Get method
 app.get("/api/notes", (req, res) => {
     fs.readFile(path.join(__dirname, "./db/db.json"), "utf8", (error,notes) => {
         if (error) {
@@ -30,19 +30,16 @@ app.get("/api/notes", (req, res) => {
         })
     });
 
-//use POST method to bring user input to backend
+// POST method to bring user input to backend
 app.post("/api/notes", (req, res) => {
     //declare const for the note currently being saved by user
     const currentNote = req.body;
-    //retrieve notes from db.json, get id of last note, add 1 to it to create 
-    //new id, save current note with new id
     fs.readFile(path.join(__dirname, "./db/db.json"), "utf8", (error, notes) => {
         if (error) {
             return console.log(error)
             }
         notes = JSON.parse(notes)
-        //assign unique id to each new note depending on last id.
-        //if no items in notes array, assign id as 10
+        // assign unique id to each new note depending on last id. if no items in notes array, assign id as 10
         if (notes.length > 0) {
             let lastId = notes[notes.length - 1].id
             var id =  parseInt(lastId)+ 1
@@ -69,7 +66,7 @@ app.post("/api/notes", (req, res) => {
         });
     });
 
-//delete chosen note using delete http method
+//delete function
 app.delete("/api/notes/:id", (req, res) => {
     let deleteId = JSON.parse(req.params.id);
     console.log("ID to be deleted: " ,deleteId);
@@ -94,5 +91,5 @@ app.delete("/api/notes/:id", (req, res) => {
         }); 
     });
 
-//initialize port to start listening
+//initialize function
 app.listen(PORT, () => console.log(`App listening on PORT ${PORT}`));
